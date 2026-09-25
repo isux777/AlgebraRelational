@@ -55,17 +55,51 @@ public class Relation {
         return res;
     }
 
-    public Relation Union(Relation one, Relation two){
+    public Relation Union(Relation one, Relation two) {
+        Relation res = new Relation();
+        if (one.header.equals(two.header)) {
+            res.header = new ArrayList<String>(one.header);
+
+            for (int i = 0; i < one.rows.size(); i++) {
+                res.rows.add(one.rows.get(i));
+            }
+            for (int i = 0; i < two.rows.size(); i++) {
+                Row r2 = two.rows.get(i);
+                boolean ce = false;
+                for (int j = 0; j < res.rows.size(); j++) {
+                    if (res.rows.get(j).values.equals(r2.values)) {
+                        ce = true;
+                    }
+                }
+                if (!ce) {
+                    res.rows.add(r2);
+                }
+            }
+        }
+        return res;
+    }
+
+    public Relation Difference(Relation one, Relation two){
         Relation res = new Relation();
         if(one.header.equals(two.header)){
             res.header = new ArrayList<String>(one.header);
+            for(int i = 0; i < one.rows.size(); i++){
+                Row r1 =one.rows.get(i);
+                boolean ce = false;
+
+                for (int j = 0; j < two.rows.size(); j++) {
+                    if (r1.values.equals(two.rows.get(j).values)){
+                        ce = true;
+                    }
+                }
+                if(!ce){
+                    res.rows.add(r1);
+                }
+            }
         }
-        for (int i = 0; i < one.rows.size(); i++) {
-            res.rows.add(one.rows.get(i));
-        }
-        for (int i = 0; i < two.rows.size(); i++) {
-            Row r2 = two.rows.get(i);
-            boolean ce = false;  
-        }
+        return res;
     }
 }
+
+
+ 
